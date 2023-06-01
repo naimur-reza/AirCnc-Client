@@ -6,7 +6,7 @@ import SignUp from "../pages/SignUp/SignUp";
 import RoomDetails from "../pages/RoomDetails/RoomDetails";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
-import AddRoom from "../components/Dashboard/AddRoom";
+import AddRoom from "../pages/Dashboard/AddRoom";
 
 export const router = createBrowserRouter([
   {
