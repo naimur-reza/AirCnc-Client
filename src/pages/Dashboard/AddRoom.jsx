@@ -4,6 +4,13 @@ import { uploadImage } from "../../api/utils";
 import useAuth from "../../api/useAuth";
 
 const AddRoom = () => {
+  const { user } = useAuth();
+  const [dates, setDates] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
+
   const [loading, setLoading] = useState(false);
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
 
@@ -22,18 +29,22 @@ const AddRoom = () => {
     const image = e.target.image.files[0];
 
     // upload image operation
-    uploadImage(image)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-        setLoading(false);
-      });
+    // uploadImage(image)
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.message);
+    //     setLoading(false);
+    //   });
   };
   const handleImageChange = (image) => {
     console.log(image.name);
     setUploadButtonText(image.name);
+  };
+
+  const handleDates = (range) => {
+    setDates(range.selection);
   };
   return (
     <AddRoomForm
@@ -41,6 +52,8 @@ const AddRoom = () => {
       loading={loading}
       uploadButtonText={uploadButtonText}
       handleImageChange={handleImageChange}
+      dates={dates}
+      handleDates={handleDates}
     />
   );
 };

@@ -1,18 +1,15 @@
-import { DateRange } from 'react-date-range'
-
-import 'react-date-range/dist/styles.css'
-import 'react-date-range/dist/theme/default.css'
+import { DateRange } from "react-date-range";
 
 const DatePicker = () => {
   return (
     <DateRange
-      rangeColors={['#262626']}
+      rangeColors={["#262626"]}
       date={new Date()}
-      direction='vertical'
+      direction="vertical"
       showDateDisplay={false}
       minDate={new Date()}
     />
-  )
-}
+  );
+};
 
-export default DatePicker
+export default DatePicker;

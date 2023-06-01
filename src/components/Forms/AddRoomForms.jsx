@@ -49,7 +49,11 @@ const AddRoomForm = ({
               <label htmlFor="location" className="block text-gray-600">
                 Select Availability Range
               </label>
-              <DateRange rangeColors={["#F43F5E"]} />
+              <DateRange
+                ranges={[dates]}
+                onChange={handleDates}
+                rangeColors={["#F43F5E"]}
+              />
             </div>
           </div>
           <div className="space-y-6">
