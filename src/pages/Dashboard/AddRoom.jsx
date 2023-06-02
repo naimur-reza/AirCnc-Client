@@ -23,6 +23,7 @@ const AddRoom = () => {
     const title = e.target.title.value;
     const description = e.target.description.value;
     const price = e.target.price.value;
+    const bathrooms = e.target.bathrooms.value;
     const from = dates.startDate;
     const to = dates.endDate;
     const bed = e.target.bedrooms.value;
@@ -40,6 +41,7 @@ const AddRoom = () => {
           description,
           price,
           from,
+          bathrooms,
           to,
           bed,
           guest,

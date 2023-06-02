@@ -1,20 +1,34 @@
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
-import { useCallback, useContext, useState } from "react";
-import { AuthContext } from "../../../providers/AuthProvider";
+import { useCallback, useState } from "react";
+
 import { Link } from "react-router-dom";
+import HostModal from "../../Modals/HostRequestModal";
+import useAuth from "../../../api/useAuth";
+import { becomeHost } from "../../../api/auth";
+import { toast } from "react-hot-toast";
 
 const MenuDropdown = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  //   const toggleOpen = useCallback(() => {
-  //     setIsOpen(value => !value)
-  //   }, [])
+  const [modal, setModal] = useState(false);
+
+  const closeModal = () => {
+    setModal(false);
+  };
+  const modalHandler = (email) => {
+    becomeHost(email).then((data) => {
+      toast.success("You're Host Now , Post Rooms!");
+      closeModal();
+    });
+  };
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         {/* Aircnc btn */}
-        <div className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer">
+        <div
+          onClick={() => setModal(true)}
+          className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer">
           <p className="bg-gradient-to-r from-orange-600 via-purple-500 to-indigo-400 inline-block text-transparent bg-clip-text">
             AirCNC your home
           </p>
@@ -67,6 +81,12 @@ const MenuDropdown = () => {
           </div>
         </div>
       )}
+      <HostModal
+        modalHandler={modalHandler}
+        isOpen={modal}
+        email={user?.email}
+        closeModal={closeModal}
+      />
     </div>
   );
 };

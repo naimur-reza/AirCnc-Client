@@ -1,5 +1,3 @@
-// save user to the db
-
 export const saveUser = (user) => {
   const currentUser = {
     email: user.email,
@@ -21,6 +19,28 @@ export const saveUser = (user) => {
 export const getAllRooms = async () => {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/rooms`);
   const data = await res.json();
-
   return data;
+};
+
+// get single room from db
+
+export const getRoom = async (id) => {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/rooms/${id}`);
+  const data = await res.json();
+  return data;
+};
+
+// become a host
+export const becomeHost = (email) => {
+  const currentUser = {
+    role: "host",
+  };
+
+  return fetch(`${import.meta.env.VITE_API_URL}/users/${email}`, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(currentUser),
+  }).then((res) => res.json());
 };
