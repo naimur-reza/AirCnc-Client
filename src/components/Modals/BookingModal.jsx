@@ -45,7 +45,7 @@ const BookingModal = ({ modalHandler, closeModal, isOpen, bookingInfo }) => {
                 </div>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
-                    Guest: {bookingInfo.guest.displayName}
+                    Guest: {bookingInfo.guest.name}
                   </p>
                 </div>
                 <div className="mt-2">

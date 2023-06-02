@@ -3,8 +3,12 @@ import Calender from "../Rooms/Calender";
 import Button from "../Button/Button";
 import useAuth from "../../api/useAuth";
 import BookingModal from "../Modals/BookingModal";
-import { format, formatDistance } from "date-fns";
+import { formatDistance } from "date-fns";
+import { addBooking } from "../../api/bookings";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const RoomReservation = ({ room }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState({
     startDate: new Date(room.from),
     endDate: new Date(room.to),
@@ -28,11 +32,24 @@ const RoomReservation = ({ room }) => {
     price: totalPrice,
     to: value.endDate,
     from: value.startDate,
+    title: room.title,
+    guests: room.guest,
   });
-  console.log(bookingInfo);
 
   const handleSelect = (ranges) => {
     setValue({ ...value });
+  };
+
+  const modalHandler = () => {
+    addBooking(bookingInfo).then((data) => {
+      toast.success("Booking Successful");
+      closeModal();
+      navigate("/bookings/my-bookings");
+      console.log(data);
+    });
+  };
+  const closeModal = () => {
+    setIsOpen(false);
   };
   return (
     <div className="bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden">
@@ -55,7 +72,12 @@ const RoomReservation = ({ room }) => {
         <div>Total</div>
         <div>$ {totalPrice}</div>
       </div>
-      {/* <BookingModal isOpen={isOpen} /> */}
+      <BookingModal
+        bookingInfo={bookingInfo}
+        closeModal={closeModal}
+        modalHandler={modalHandler}
+        isOpen={isOpen}
+      />
     </div>
   );
 };
