@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import useAuth from "../../api/useAuth";
 import BookingModal from "../Modals/BookingModal";
 import { formatDistance } from "date-fns";
-import { addBooking } from "../../api/bookings";
+import { addBooking, updateRoomStatus } from "../../api/bookings";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 const RoomReservation = ({ room }) => {
@@ -34,6 +34,8 @@ const RoomReservation = ({ room }) => {
     from: value.startDate,
     title: room.title,
     guests: room.guest,
+    roomId: room._id,
+    image: room.image,
   });
 
   const handleSelect = (ranges) => {
@@ -42,10 +44,12 @@ const RoomReservation = ({ room }) => {
 
   const modalHandler = () => {
     addBooking(bookingInfo).then((data) => {
-      toast.success("Booking Successful");
-      closeModal();
-      navigate("/bookings/my-bookings");
-      console.log(data);
+      updateRoomStatus(room._id, true).then((data) => {
+        navigate("/dashboard/my-bookings");
+        toast.success("Booking Successful");
+        console.log(data);
+        closeModal();
+      });
     });
   };
   const closeModal = () => {
@@ -63,7 +67,7 @@ const RoomReservation = ({ room }) => {
       <div className="p-4">
         <Button
           onClick={() => setIsOpen(true)}
-          disabled={room.host.email === user?.email}
+          disabled={room.host.email === user?.email || room.booked}
           label="Reserve"
         />
       </div>
