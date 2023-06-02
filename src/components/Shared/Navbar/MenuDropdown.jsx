@@ -9,10 +9,10 @@ import { becomeHost } from "../../../api/auth";
 import { toast } from "react-hot-toast";
 
 const MenuDropdown = () => {
-  const { user } = useAuth();
+  const { user, role, logOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [modal, setModal] = useState(false);
-
+  console.log(role);
   const closeModal = () => {
     setModal(false);
   };
@@ -26,11 +26,16 @@ const MenuDropdown = () => {
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         {/* Aircnc btn */}
-        <div
-          onClick={() => setModal(true)}
-          className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer">
-          <p className="bg-gradient-to-r from-orange-600 via-purple-500 to-indigo-400 inline-block text-transparent bg-clip-text">
-            AirCNC your home
+        <div className="hidden md:block text-sm font-semibold  rounded-full hover:bg-neutral-100 transition cursor-pointer">
+          <p className="bg-gradient-to-r from-orange-500 via-purple-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+            {!role && (
+              <button
+                className="py-3 px-4"
+                onClick={() => setModal(true)}
+                disabled={!user}>
+                AirCNC your home
+              </button>
+            )}
           </p>
         </div>
         {/* Dropdown btn */}

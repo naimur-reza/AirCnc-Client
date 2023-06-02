@@ -1,27 +1,63 @@
-import React from 'react'
-import Calender from '../Rooms/Calender'
-import Button from '../Button/Button'
+import React, { useState } from "react";
+import Calender from "../Rooms/Calender";
+import Button from "../Button/Button";
+import useAuth from "../../api/useAuth";
+import BookingModal from "../Modals/BookingModal";
+import { format, formatDistance } from "date-fns";
+const RoomReservation = ({ room }) => {
+  const [value, setValue] = useState({
+    startDate: new Date(room.from),
+    endDate: new Date(room.to),
+    key: "selection",
+  });
+  const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth();
+  const totalPrice = parseFloat(
+    formatDistance(new Date(room.to), new Date(room.from)).split(" ")[0] *
+      room.price
+  );
+  console.log(totalPrice);
+  const [bookingInfo, setBookingInfo] = useState({
+    guest: {
+      name: user?.displayName,
+      email: user?.email,
+      photoURL: user?.photoURL,
+    },
+    host: room.host.email,
+    location: room.location,
+    price: totalPrice,
+    to: value.endDate,
+    from: value.startDate,
+  });
+  console.log(bookingInfo);
 
-const RoomReservation = () => {
+  const handleSelect = (ranges) => {
+    setValue({ ...value });
+  };
   return (
-    <div className='bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden'>
-      <div className='flex flex-row items-center gap-1 p-4'>
-        <div className='text-2xl font-semibold'>$ 200</div>
-        <div className='font-light text-neutral-600'>night</div>
+    <div className="bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden">
+      <div className="flex flex-row items-center gap-1 p-4">
+        <div className="text-2xl font-semibold">$ {room.price}</div>
+        <div className="font-light text-neutral-600">night</div>
       </div>
       <hr />
-      <Calender />
+      <Calender value={value} handleSelect={handleSelect} />
       <hr />
-      <div className='p-4'>
-        <Button label='Reserve' />
+      <div className="p-4">
+        <Button
+          onClick={() => setIsOpen(true)}
+          disabled={room.host.email === user?.email}
+          label="Reserve"
+        />
       </div>
       <hr />
-      <div className='p-4 flex flex-row items-center justify-between font-semibold text-lg'>
+      <div className="p-4 flex flex-row items-center justify-between font-semibold text-lg">
         <div>Total</div>
-        <div>$ 300</div>
+        <div>$ {totalPrice}</div>
       </div>
+      {/* <BookingModal isOpen={isOpen} /> */}
     </div>
-  )
-}
+  );
+};
 
-export default RoomReservation
+export default RoomReservation;
