@@ -9,7 +9,7 @@ import { becomeHost } from "../../../api/auth";
 import { toast } from "react-hot-toast";
 
 const MenuDropdown = () => {
-  const { user, role, logOut } = useAuth();
+  const { user, role, logOut, setRole } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [modal, setModal] = useState(false);
   console.log(role);
@@ -19,6 +19,7 @@ const MenuDropdown = () => {
   const modalHandler = (email) => {
     becomeHost(email).then((data) => {
       toast.success("You're Host Now , Post Rooms!");
+      setRole("Host");
       closeModal();
     });
   };
