@@ -23,3 +23,10 @@ export const updateRoomStatus = async (id, status) => {
   const data = await res.json();
   return data;
 };
+
+// get bookings
+export const getBookings = async (email) => {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/bookings/${email}`);
+  const data = await res.json();
+  return data;
+};

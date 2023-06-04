@@ -5,13 +5,14 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { saveUser } from "../../api/auth";
 import SocialLogin from "../../components/SocialLogin/SocialLogin";
+import { uploadImage } from "../../api/utils";
 
 const SignUp = () => {
   const { loading, setLoading, createUser, updateUserProfile } =
     useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  // const from = location.state?.from?.pathname || "/";
 
   // Handle user registration
   const handleSubmit = (event) => {
@@ -22,17 +23,9 @@ const SignUp = () => {
 
     // Image Upload
     const image = event.target.image.files[0];
-    const formData = new FormData();
-    formData.append("image", image);
-
-    const url = `https://api.imgbb.com/1/upload?key=${"37eff22d9aca135872e0384f2c9ce399"}`;
-    fetch(url, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
+    uploadImage(image)
       .then((imageData) => {
-        const imageUrl = imageData;
+        const imageUrl = imageData.data.display_url;
         console.log(imageUrl);
         createUser(email, password)
           .then(() => {
@@ -41,7 +34,7 @@ const SignUp = () => {
                 const user = res.user;
                 saveUser(user);
                 toast.success("SignUp successful");
-                navigate(from, { replace: true });
+                navigate("/");
               })
               .catch((err) => {
                 setLoading(false);

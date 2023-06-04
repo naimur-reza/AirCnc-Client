@@ -1,4 +1,20 @@
+import { useEffect, useState } from "react";
+import useAuth from "../../api/useAuth";
+import { getBookings } from "../../api/bookings";
+import TableRow from "./TableRow";
+
 const MyBookings = () => {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+  useEffect(() => {
+    setLoading(true);
+    getBookings(user?.email).then((data) => {
+      setBookings(data);
+      setLoading(false);
+    });
+  }, [user?.email]);
+  console.log(bookings);
   return (
     <div className="container mx-auto px-4 sm:px-8">
       <div className="py-8">
@@ -39,7 +55,12 @@ const MyBookings = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody>{/* Table Data */}</tbody>
+              <tbody>
+                {bookings &&
+                  bookings.map((booking) => (
+                    <TableRow booking={booking} key={booking._id} />
+                  ))}
+              </tbody>
             </table>
           </div>
         </div>
