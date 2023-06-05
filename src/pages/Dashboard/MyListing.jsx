@@ -5,26 +5,39 @@ import EmptyState from "../../components/Shared/EmptyState";
 import Loader from "../../components/Shared/Loader";
 import { getHostRoom } from "../../api/rooms";
 import { useAxiosSecure } from "../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const MyListings = () => {
   const [axiosSecure] = useAxiosSecure();
-  const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
-  const [rooms, setRooms] = useState([]);
-  const fetchRooms = () => {
-    setLoading(true);
-    axiosSecure(`/rooms/host/${user.email}`)
-      .then((data) => {
-        setRooms(data.data);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err.message));
-  };
 
-  useEffect(() => {
-    fetchRooms();
-  }, [user]);
-  console.log(rooms);
+  const { user, loading } = useAuth();
+  // const [rooms, setRooms] = useState([]);
+  // const fetchRooms = () => {
+  //   setLoading(true);
+  //   axiosSecure(`/rooms/host/${user.email}`)
+  //     .then((data) => {
+  //       setRooms(data.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => console.log(err.message));
+  // };
+
+  // useEffect(() => {
+  //   fetchRooms();
+  // }, [user]);
+  // console.log(rooms);
+
+  const { data: rooms = [], refetch } = useQuery({
+    queryKey: ["rooms", user?.email],
+    enabled: !loading,
+    queryFn: async () => {
+      const res = await axiosSecure(`/rooms/host/${user?.email}`);
+      console.log("res from axios", res.data);
+
+      return res.data;
+    },
+  });
+
   if (loading) {
     return <Loader />;
   }
@@ -80,7 +93,7 @@ const MyListings = () => {
                     {rooms &&
                       rooms.map((room) => (
                         <RoomDataRow
-                          fetchRooms={fetchRooms}
+                          refetch={refetch}
                           key={room._id}
                           room={room}
                         />
