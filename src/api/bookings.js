@@ -30,3 +30,12 @@ export const getBookings = async (email) => {
   const data = await res.json();
   return data;
 };
+
+// delete booking
+export const deleteBooking = async (id) => {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/bookings/${id}`, {
+    method: "DELETE",
+  });
+  const data = await res.json();
+  return data;
+};
