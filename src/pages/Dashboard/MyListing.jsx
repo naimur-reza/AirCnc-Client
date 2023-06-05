@@ -4,18 +4,23 @@ import RoomDataRow from "./RoomDataRow";
 import EmptyState from "../../components/Shared/EmptyState";
 import Loader from "../../components/Shared/Loader";
 import { getHostRoom } from "../../api/rooms";
+import { useAxiosSecure } from "../../hooks/useAxiosSecure";
 
 const MyListings = () => {
+  const [axiosSecure] = useAxiosSecure();
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const [rooms, setRooms] = useState([]);
   const fetchRooms = () => {
     setLoading(true);
-    getHostRoom(user?.email).then((data) => {
-      setRooms(data);
-      setLoading(false);
-    });
+    axiosSecure(`/rooms/host/${user.email}`)
+      .then((data) => {
+        setRooms(data.data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err.message));
   };
+
   useEffect(() => {
     fetchRooms();
   }, [user]);

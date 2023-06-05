@@ -7,11 +7,11 @@ const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-const { logOut } = useAuth();
-const navigate = useNavigate();
 export const useAxiosSecure = () => {
+  const { logOut } = useAuth();
+  const navigate = useNavigate();
   useEffect(() => {
-    const token = `bearer ${localStorage.getItem("access token")}`;
+    const token = `bearer ${localStorage.getItem("access-token")}`;
 
     //1. intercept request (client to server)
     axiosSecure.interceptors.request.use((config) => {
@@ -26,8 +26,8 @@ export const useAxiosSecure = () => {
       (response) => response,
       async (error) => {
         if (
-          (error.response && error.response.status(401)) ||
-          error.response.status(403)
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
         ) {
           await logOut();
           navigate("/login");
@@ -35,7 +35,7 @@ export const useAxiosSecure = () => {
         return Promise.reject(error);
       }
     );
-  }, []);
+  }, [logOut, axiosSecure, navigate]);
 
   return [axiosSecure];
 };
