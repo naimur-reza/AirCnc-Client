@@ -42,16 +42,16 @@ const RoomReservation = ({ room }) => {
     setValue({ ...value });
   };
 
-  const modalHandler = () => {
-    addBooking(bookingInfo).then((data) => {
-      updateRoomStatus(room._id, true).then((data) => {
-        navigate("/dashboard/my-bookings");
-        toast.success("Booking Successful");
-        console.log(data);
-        closeModal();
-      });
-    });
-  };
+  // const modalHandler = () => {
+  //   addBooking(bookingInfo).then((data) => {
+  //     updateRoomStatus(room._id, true).then((data) => {
+  //       navigate("/dashboard/my-bookings");
+  //       toast.success("Booking Successful");
+  //       console.log(data);
+  //       closeModal();
+  //     });
+  //   });
+  // };
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -79,7 +79,6 @@ const RoomReservation = ({ room }) => {
       <BookingModal
         bookingInfo={bookingInfo}
         closeModal={closeModal}
-        modalHandler={modalHandler}
         isOpen={isOpen}
       />
     </div>

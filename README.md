@@ -2,7 +2,7 @@
 
 <h5> Design Tools </h5>
 
--Tailwind Css
+- Tailwind Css
 
 <h5>Package Used :</h5>
 
