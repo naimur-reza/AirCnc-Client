@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../api/useAuth";
-import { getAllRooms } from "../../api/auth";
 import RoomDataRow from "./RoomDataRow";
 import EmptyState from "../../components/Shared/EmptyState";
 import Loader from "../../components/Shared/Loader";
+import { getHostRoom } from "../../api/rooms";
 
 const MyListings = () => {
   const [loading, setLoading] = useState(false);
@@ -11,7 +11,7 @@ const MyListings = () => {
   const [rooms, setRooms] = useState([]);
   const fetchRooms = () => {
     setLoading(true);
-    getAllRooms(user?.email).then((data) => {
+    getHostRoom(user?.email).then((data) => {
       setRooms(data);
       setLoading(false);
     });

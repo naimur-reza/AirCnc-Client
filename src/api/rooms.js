@@ -19,3 +19,18 @@ export const deleteRoom = async (id) => {
   const data = await res.json();
   return data;
 };
+
+// get logged in host rooms
+
+export const getHostRoom = async (email) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/rooms/host/${email}`,
+    {
+      headers: {
+        authorization: `bearer ${localStorage.getItem("access-token")}`,
+      },
+    }
+  );
+  const data = res.json();
+  return data;
+};
