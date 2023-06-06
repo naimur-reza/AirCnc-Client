@@ -59,7 +59,7 @@ const AddRoom = () => {
         // addRoom(roomData)
         axiosSecure.post("/rooms", roomData).then((data) => {
           console.log(data);
-          navigate("/dashboard/my-listing");
+          navigate("/dashboard/my-listings");
           setLoading(false);
         });
       })
