@@ -3,8 +3,11 @@ import AddRoomForm from "../../components/Forms/AddRoomForms";
 import { uploadImage } from "../../api/utils";
 import useAuth from "../../api/useAuth";
 import { addRoom } from "../../api/rooms";
+import { useAxiosSecure } from "../../hooks/useAxiosSecure";
+import { useNavigate } from "react-router-dom";
 
 const AddRoom = () => {
+  const [axiosSecure] = useAxiosSecure();
   const { user } = useAuth();
   const [dates, setDates] = useState({
     startDate: new Date(),
@@ -12,6 +15,7 @@ const AddRoom = () => {
     key: "selection",
   });
 
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
 
@@ -52,9 +56,12 @@ const AddRoom = () => {
           },
         };
         // post room data to the db
-        addRoom(roomData);
-        console.log(roomData);
-        setLoading(false);
+        // addRoom(roomData)
+        axiosSecure.post("/rooms", roomData).then((data) => {
+          console.log(data);
+          navigate("/dashboard/my-listing");
+          setLoading(false);
+        });
       })
       .catch((err) => {
         console.log(err.message);

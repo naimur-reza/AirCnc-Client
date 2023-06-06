@@ -7,6 +7,7 @@ import UpdateRoomModal from "../../components/Modals/UpdateRoomModal";
 
 const RoomDataRow = ({ room, refetch }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isUpdateModal, setIsUpdateModal] = useState(false);
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -72,7 +73,9 @@ const RoomDataRow = ({ room, refetch }) => {
           <span
             aria-hidden="true"
             className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-          <span className="relative" onClick={()=>}>Update</span>
+          <span className="relative" onClick={() => setIsUpdateModal(true)}>
+            Update
+          </span>
         </span>
         <DeleteModal
           isOpen={isOpen}
@@ -80,7 +83,10 @@ const RoomDataRow = ({ room, refetch }) => {
           closeModal={closeModal}
           id={room?._id}
         />
-        <UpdateRoomModal/>
+        <UpdateRoomModal
+          isUpdateModal={isUpdateModal}
+          setIsUpdateModal={setIsUpdateModal}
+        />
       </td>
     </tr>
   );
