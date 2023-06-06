@@ -7,14 +7,15 @@ import { toast } from "react-hot-toast";
 import { useState } from "react";
 import HostModal from "../Modals/HostRequestModal";
 const GuestMenu = () => {
-  const { user, role } = useAuth();
+  const { user, role, setRole } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
   const modalHandler = (email) => {
     becomeHost(email)
       .then((data) => {
         toast.success("You are now a host");
-        closeModal;
+        setRole("host");
+        closeModal();
       })
       .catch((error) => {
         toast.error("Something went wrong");

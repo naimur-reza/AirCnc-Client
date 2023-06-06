@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      { path: "/dashboard/", element: <AddRoom /> },
+      { path: "/dashboard/", element: <MyBookings /> },
       { path: "/dashboard/add-room", element: <AddRoom /> },
       { path: "/dashboard/my-listings", element: <MyListings /> },
       {
