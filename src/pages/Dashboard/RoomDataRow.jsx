@@ -3,6 +3,7 @@ import { useState } from "react";
 import { deleteRoom } from "../../api/rooms";
 import DeleteModal from "../../components/Modals/DeleteModal";
 import { toast } from "react-hot-toast";
+import UpdateRoomModal from "../../components/Modals/UpdateRoomModal";
 
 const RoomDataRow = ({ room, refetch }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +72,7 @@ const RoomDataRow = ({ room, refetch }) => {
           <span
             aria-hidden="true"
             className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-          <span className="relative">Update</span>
+          <span className="relative" onClick={()=>}>Update</span>
         </span>
         <DeleteModal
           isOpen={isOpen}
@@ -79,6 +80,7 @@ const RoomDataRow = ({ room, refetch }) => {
           closeModal={closeModal}
           id={room?._id}
         />
+        <UpdateRoomModal/>
       </td>
     </tr>
   );
