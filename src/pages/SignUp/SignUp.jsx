@@ -28,9 +28,9 @@ const SignUp = () => {
         const imageUrl = imageData.data.display_url;
         console.log(imageUrl);
         createUser(email, password)
-          .then(() => {
+          .then((res) => {
             updateUserProfile(name, imageUrl)
-              .then((res) => {
+              .then(() => {
                 const user = res.user;
                 saveUser(user);
                 toast.success("SignUp successful");

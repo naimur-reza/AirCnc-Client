@@ -36,6 +36,7 @@ const CheckoutForm = ({ closeModal, bookingInfo }) => {
   }, [bookingInfo, axiosSecure]);
 
   const handleSubmit = async (event) => {
+    setProcessing(true);
     // Block native form submission.
     event.preventDefault();
 
@@ -81,7 +82,6 @@ const CheckoutForm = ({ closeModal, bookingInfo }) => {
       setError(confirmError.message);
     }
 
-    setProcessing(true);
     if (paymentIntent.status === "succeeded") {
       // save payment in db
       const paymentInfo = {
@@ -90,11 +90,12 @@ const CheckoutForm = ({ closeModal, bookingInfo }) => {
         date: new Date(),
       };
       axiosSecure.post("/bookings", paymentInfo).then((res) => {
-        console.log(res.data);
+        console.log(paymentIntent);
         if (res.data.insertedId) {
           updateRoomStatus(paymentInfo.roomId, true)
             .then((data) => {
-              const text = `Booking successful! TransactionId: ${paymentInfo.id}`;
+              console.log(data);
+              const text = `Booking successful! TransactionId: ${paymentIntent.id}`;
               toast.success(text);
               navigate("/dashboard/my-bookings");
               setProcessing(false);
