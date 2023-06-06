@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { saveUser } from "../../api/auth";
@@ -8,14 +8,15 @@ import SocialLogin from "../../components/SocialLogin/SocialLogin";
 import { uploadImage } from "../../api/utils";
 
 const SignUp = () => {
-  const { loading, setLoading, createUser, updateUserProfile } =
-    useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   // const from = location.state?.from?.pathname || "/";
 
   // Handle user registration
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     const name = event.target.name.value;
     const email = event.target.email.value;
@@ -34,6 +35,7 @@ const SignUp = () => {
                 const user = res.user;
                 saveUser(user);
                 toast.success("SignUp successful");
+                setLoading(false);
                 navigate("/");
               })
               .catch((err) => {
@@ -128,6 +130,7 @@ const SignUp = () => {
 
           <div>
             <button
+              disabled={loading}
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white">
               {loading ? (
