@@ -73,13 +73,22 @@ const RoomDataRow = ({ room, refetch }) => {
           <span
             aria-hidden="true"
             className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-          <span className="relative">Update</span>
+          <span onClick={() => setIsUpdateModal(true)} className="relative">
+            Update
+          </span>
         </span>
         <DeleteModal
           isOpen={isOpen}
           modalHandler={modalHandler}
           closeModal={closeModal}
           id={room?._id}
+        />
+        <UpdateRoomModal
+          refetch={refetch}
+          id={room?._id}
+          room={room}
+          isUpdateModal={isUpdateModal}
+          setIsUpdateModal={setIsUpdateModal}
         />
       </td>
     </tr>
